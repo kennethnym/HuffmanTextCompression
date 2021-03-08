@@ -2,14 +2,18 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
-javafx {
-    modules = ['javafx.controls']
-}
-
 sourceSets {
     main {
         java {
             srcDirs 'src'
         }
     }
+}
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    modules = ['javafx.controls']
 }

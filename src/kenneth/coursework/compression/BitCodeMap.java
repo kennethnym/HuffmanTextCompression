@@ -9,14 +9,6 @@ import java.util.HashMap;
  * Creates a bit code map for a {@link HuffmanTree} that maps characters to their corresponding huffman code.
  */
 class BitCodeMap extends HashMap<Integer, int[]> {
-    void writeToStream(DataOutputStream stream) throws IOException {
-        stream.writeInt(size());
-        for (var entry : entrySet()) {
-            stream.writeInt(entry.getValue()[1]);
-            stream.write(entry.getKey());
-        }
-    }
-
     void generateBitCode(HuffmanTree tree) {
         final var ref = new Object() {
             int code = 0;

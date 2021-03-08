@@ -9,14 +9,7 @@ public class HuffmanDecompressor {
     public void decompress(String inputFile, String dest) throws IOException, IncorrectFormatException {
         final var fileInput = new DataInputStream(new FileInputStream(inputFile));
 
-        final var treeSize = fileInput.readInt();
-        final var serializedTree = new byte[treeSize];
-
-        for (int i = 0; i < treeSize; i++) {
-            serializedTree[i] = fileInput.readByte();
-        }
-
-        final var huffmanTree = HuffmanTree.deserialize(new String(serializedTree, StandardCharsets.UTF_8));
+        final var huffmanTree = HuffmanTreeSerializer.deserializeFromStream(fileInput);
         final var fileOutput = new DataOutputStream(new FileOutputStream(dest));
         var fileSize = fileInput.readLong();
 
@@ -35,7 +28,6 @@ public class HuffmanDecompressor {
                 final var nextByte = nextNode.getByte();
 
                 if (nextByte != null) {
-                    System.out.println(nextByte);
                     fileOutput.write(nextByte);
                     if (++bytesWritten == fileSize) break;
                     node = root;

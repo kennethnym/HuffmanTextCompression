@@ -29,9 +29,9 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        final var inputFile = "/Users/kenneth/Desktop/test.txt";
-        final var outputFile = "/Users/kenneth/Desktop/compressed_test";
-        final var decompressedFile = "/Users/kenneth/Desktop/decompressed_test";
+        final var inputFile = "/Users/kenneth/Desktop/frankenstein.txt";
+        final var outputFile = "/Users/kenneth/Desktop/compressed_frankenstein";
+        final var decompressedFile = "/Users/kenneth/Desktop/decompressed_frankenstein";
         final var compressor = new HuffmanCompressor();
         final var decompressor = new HuffmanDecompressor();
 

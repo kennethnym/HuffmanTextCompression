@@ -24,10 +24,12 @@ public class HuffmanCompressor {
         final var fileInput = new FileInputStream(inputFile);
         final var fileOutput = new DataOutputStream(new FileOutputStream(file, false));
 
-        final var serializedTree = tree.serialize().getBytes(StandardCharsets.UTF_8);
+        HuffmanTreeSerializer.serializeToStream(tree, fileOutput);
 
-        fileOutput.writeInt(serializedTree.length);
-        fileOutput.write(serializedTree);
+//        final var serializedTree = tree.serialize().getBytes(StandardCharsets.UTF_8);
+//
+//        fileOutput.writeInt(serializedTree.length);
+//        fileOutput.write(serializedTree);
         fileOutput.writeLong(fileInput.getChannel().size());
 
         final var bitCodeMap = new BitCodeMap();

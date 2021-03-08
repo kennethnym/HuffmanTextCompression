@@ -5,8 +5,10 @@ import kenneth.coursework.utils.BinaryNode;
 import kenneth.coursework.utils.BinaryTree;
 import kenneth.coursework.utils.Serializable;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,7 +16,7 @@ import java.util.List;
  */
 public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> implements Serializable {
     private InputStream inputStream;
-    private ByteFrequencyMap frequencyMap = new ByteFrequencyMap();
+    private final ByteFrequencyMap frequencyMap = new ByteFrequencyMap();
 
     public HuffmanTree(HuffmanNode root) {
         super(root);
@@ -177,7 +179,7 @@ public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> implements 
          * A character in the original text with the associated frequency.
          * null of this node has children.
          */
-        private final Integer b;
+        private Integer b;
 
         /**
          * If this node stores a character, frequency will be the frequency of the character.
@@ -203,6 +205,10 @@ public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> implements 
 
         public Integer getByte() {
             return b;
+        }
+
+        public void setByte(int b) {
+            this.b = b;
         }
 
         public boolean hasChildren() {
