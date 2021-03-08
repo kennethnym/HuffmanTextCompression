@@ -10,31 +10,6 @@ import java.util.HashMap;
  */
 class BitCodeMap extends HashMap<Integer, int[]> {
     void generateBitCode(HuffmanTree tree) {
-        final var ref = new Object() {
-            int code = 0;
-            int prevLevel = 0;
-        };
 
-        tree.traverse((node, position, level) -> {
-            if (position == BinaryTree.Position.ROOT) return;
-            if (level <= ref.prevLevel) {
-                ref.code >>>= ref.prevLevel - level + 1;
-            }
-
-            ref.code <<= 1;
-            ref.code |= position.val;
-
-            final var b = node.getByte();
-
-            if (b != null) {
-                // we have arrived to an end node
-                final var arr = new int[2];
-                arr[0] = level;
-                arr[1] = ref.code;
-                put(b, arr);
-            }
-
-            ref.prevLevel = level;
-        });
     }
 }

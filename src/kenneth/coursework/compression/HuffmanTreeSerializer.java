@@ -9,7 +9,7 @@ import java.util.LinkedList;
  * Serialize/deserialize huffman trees.
  */
 public class HuffmanTreeSerializer {
-    private enum Code {
+    public enum Code {
         UP((short) -2),
         LEFT((short) -3),
         RIGHT((short) -4),
@@ -19,6 +19,10 @@ public class HuffmanTreeSerializer {
 
         Code(short val) {
             this.val = val;
+        }
+
+        public short getCode() {
+            return val;
         }
     }
 

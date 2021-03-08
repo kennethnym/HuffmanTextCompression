@@ -10,15 +10,26 @@ abstract public class BinaryTree<TNode extends BinaryNode> {
         void visit(TNode node, Position position, int level);
     }
 
+    /**
+     * Describes the position of a node in a binary tree.
+     * A node in a binary tree can be a left node, a right node or the root of the tree.
+     */
     public enum Position {
         ROOT(-1),
         LEFT(0),
         RIGHT(1);
 
-        public int val;
+        private final int val;
 
         Position(int val) {
             this.val = val;
+        }
+
+        /**
+         * @return the bit representing the pathing in a huffman tree. 0 = left, 1 = right.
+         */
+        public int getHuffmanBit() {
+            return val;
         }
     }
 
