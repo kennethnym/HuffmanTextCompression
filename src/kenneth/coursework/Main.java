@@ -25,6 +25,9 @@ import java.io.IOException;
  * - mar 7
  * - managed to fix compression/decompression issue
  * - started working on burrows-wheeler transform
+ * - mar 8
+ * - made some optimizations
+ * - redesign huffman tree serialization
  */
 
 public class Main {
