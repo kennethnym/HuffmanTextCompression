@@ -203,3 +203,8 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,macos,windows,linux
 
 out
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build

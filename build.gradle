@@ -5,3 +5,11 @@ plugins {
 javafx {
     modules = ['javafx.controls']
 }
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src'
+        }
+    }
+}
