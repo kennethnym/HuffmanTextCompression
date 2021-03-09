@@ -56,7 +56,7 @@ public class HuffmanCompressor {
             // of the bit code is. it can be 0100, or 100, or 00100.
             //
             // by knowing the length, we can create a bit mask with exactly that amount of bits
-            // (by creating a leading 1 shifted to the right by the same amount).
+            // (by creating a leading 1 shifted to the left by the same amount).
             //
             // we write the byte (partition) left to right - so pos should start at 8 (8 bits = 1 byte).
             // when we reaches 0, we know the byte is full, so we write the byte to the stream
@@ -108,8 +108,9 @@ public class HuffmanCompressor {
         @Override
         public void visit(HuffmanTree.HuffmanNode node, BinaryTree.Position position, int level) {
             if (level <= prevLevel) {
-                code >>>= prevLevel - level + 1;
-                for (var i = 0; i <= prevLevel - level; i++) {
+                final var levelDiff = prevLevel - level + 1;
+                code >>>= levelDiff;
+                for (var i = 0; i < levelDiff; i++) {
                     serializedTree.addLast(HuffmanTreeSerializer.Code.UP.getCode());
                     shortCount++;
                 }
