@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 public class HuffmanDecompressor {
     public void decompress(String inputFile, String dest) throws IOException, IncorrectFormatException {
-        final var fileInput = new DataInputStream(new FileInputStream(inputFile));
+        final var fileInput = new DataInputStream(new BufferedInputStream(new FileInputStream(inputFile)));
 
         final var huffmanTree = HuffmanTreeSerializer.deserializeFromStream(fileInput);
         final var fileOutput = new DataOutputStream(new FileOutputStream(dest));

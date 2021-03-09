@@ -11,11 +11,12 @@ import java.util.LinkedList;
 public class HuffmanCompressor {
     private static final String FILE_EXTENSION = ".huff";
 
-    public void compress(String inputFile, String dest, boolean overwrite) throws IOException, IncorrectFormatException {
-        HuffmanTree tree = new HuffmanTree(new FileInputStream(inputFile));
+    public void compress(String inputFilePath, String dest, boolean overwrite) throws IOException, IncorrectFormatException {
+        HuffmanTree tree = new HuffmanTree(new FileInputStream(inputFilePath));
 
         tree.build();
 
+        final var inputFile = new File(inputFilePath);
         final var file = new File(dest + FILE_EXTENSION);
         final var isFileCreated = file.createNewFile();
 
@@ -23,7 +24,7 @@ public class HuffmanCompressor {
             throw new FileAlreadyExistsException(dest + FILE_EXTENSION);
         }
 
-        final var fileInput = new FileInputStream(inputFile);
+        final var inputFileStream = new BufferedInputStream(new FileInputStream(inputFile));
         final var fileOutput = new DataOutputStream(new FileOutputStream(file, false));
 
         final var treeVisitor = new HuffmanTreeVisitor();
@@ -34,12 +35,12 @@ public class HuffmanCompressor {
 
         final var bitCodeMap = treeVisitor.getBitCodeMap();
 
-        fileOutput.writeLong(fileInput.getChannel().size());
+        fileOutput.writeLong(inputFile.length());
 
         var partition = 0;
         var pos = 8;
 
-        for (var b = fileInput.read(); b >= 0; b = fileInput.read()) {
+        for (var b = inputFileStream.read(); b >= 0; b = inputFileStream.read()) {
             final var bits = bitCodeMap.get(b);
             final var bitLength = bits[0];
             final var bitCode = bits[1];
@@ -80,7 +81,7 @@ public class HuffmanCompressor {
             fileOutput.write(partition);
         }
 
-        fileInput.close();
+        inputFileStream.close();
         fileOutput.close();
     }
 
