@@ -71,7 +71,7 @@ public class HuffmanCompressor {
                     pos = 8;
                     partition = 0;
                 }
-                partition |= ((bitCode & mask) >> maskPos--) << (pos-- - 1);
+                partition |= ((bitCode & mask) >> (maskPos-- - pos-- + 1));
                 mask >>>= 1;
             }
         }

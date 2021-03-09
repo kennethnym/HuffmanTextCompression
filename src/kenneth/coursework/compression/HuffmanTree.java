@@ -1,18 +1,15 @@
 package kenneth.coursework.compression;
 
-import kenneth.coursework.exceptions.IncorrectFormatException;
 import kenneth.coursework.utils.BinaryNode;
 import kenneth.coursework.utils.BinaryTree;
-import kenneth.coursework.utils.Serializable;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 /**
  * Represents a huffman encoding tree.
  */
-public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> implements Serializable {
+public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> {
     private InputStream inputStream;
     private final ByteFrequencyMap frequencyMap = new ByteFrequencyMap();
 
@@ -28,33 +25,36 @@ public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> implements 
     public void build() throws IOException {
         constructFrequencyMap();
 
-        final List<HuffmanNode> sortedFrequencyNodes = frequencyMap.toHuffmanNodes();
-
-        int nodeCount = sortedFrequencyNodes.size();
+        final var sortedFrequencyNodes = frequencyMap.toHuffmanNodes();
+        var nodeCount = sortedFrequencyNodes.getSize();
 
         if (nodeCount == 1) {
-            final var node = sortedFrequencyNodes.get(0);
+            final var node = sortedFrequencyNodes.removeFirst();
             root = new HuffmanNode(node, null, node.frequency);
             return;
         }
 
         while (nodeCount > 0) {
-            final HuffmanNode smallest = sortedFrequencyNodes.remove(0);
-            final HuffmanNode secondSmallest = sortedFrequencyNodes.remove(0);
-            final int totalFrequency = smallest.frequency + secondSmallest.frequency;
+            final var smallest = sortedFrequencyNodes.removeFirst();
+            final var secondSmallest = sortedFrequencyNodes.removeFirst();
+            final var totalFrequency = smallest.frequency + secondSmallest.frequency;
 
-            nodeCount = sortedFrequencyNodes.size();
+            nodeCount = sortedFrequencyNodes.getSize();
 
             if (nodeCount > 0) {
-                final HuffmanNode parentNode = new HuffmanNode(smallest, secondSmallest, totalFrequency);
+                final var parentNode = new HuffmanNode(smallest, secondSmallest, totalFrequency);
 
-                for (int i = 0; i <= nodeCount; i++) {
-                    if (i == nodeCount) {
-                        sortedFrequencyNodes.add(parentNode);
-                    } else if (sortedFrequencyNodes.get(i).frequency >= totalFrequency) {
-                        sortedFrequencyNodes.add(Math.max(i - 1, 0), parentNode);
+                var i = 0;
+                for (var item : sortedFrequencyNodes) {
+                    if (item.getValue().frequency >= totalFrequency) {
+                        sortedFrequencyNodes.insertBefore(item, parentNode);
                         break;
                     }
+                    i++;
+                }
+
+                if (i == nodeCount) {
+                    sortedFrequencyNodes.append(parentNode);
                 }
             } else {
                 root = new HuffmanNode(smallest, secondSmallest, totalFrequency);
@@ -69,104 +69,15 @@ public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> implements 
     }
 
     @Override
-    public String serialize() {
-        final var string = new StringBuilder();
+    public String toString() {
+        final StringBuilder string = new StringBuilder();
 
-        final var ref = new Object() {
-            int prevLevel = -1;
-        };
-
-        traverse((node, pos, level) -> {
-            if (level == ref.prevLevel) {
-                string.append("-");
-            } else if (level < ref.prevLevel) {
-                string.append("^".repeat(ref.prevLevel - level + 1));
-            }
-
-            switch (pos) {
-                case LEFT:
-                    string.append("l");
-                    break;
-                case RIGHT:
-                    string.append("r");
-                    break;
-                case ROOT:
-                    string.append("R");
-                    break;
-                default:
-                    break;
-            }
-            final var b = node.b;
-            if (b != null) string.append(b);
-
-            ref.prevLevel = level;
-        });
+        traverse((node, position, level) -> string
+                .append("    ".repeat(level))
+                .append(node)
+                .append("\n"));
 
         return string.toString();
-    }
-
-    public static BinaryTree<HuffmanNode> deserialize(String string) throws IncorrectFormatException {
-        final var len = string.length();
-
-        if (!string.startsWith("R"))
-            throw new IncorrectFormatException();
-
-        if (len == 1)
-            return new HuffmanTree(new HuffmanNode());
-
-        HuffmanNode root = null;
-        HuffmanNode currentNode = null;
-        var start = 0;
-
-        while (start < len) {
-            var end = start;
-            if (len == end + 1) break;
-
-            char c;
-
-            do {
-                if (++end == len) break;
-                c = string.charAt(end);
-            } while (c != 'l' && c != 'r' && c != '-' && c != '^');
-
-            final var segment = string.substring(start, end);
-
-            if (segment.equals("^") || segment.equals("-")) {
-                start = end;
-                currentNode = (HuffmanNode) currentNode.getParent();
-                continue;
-            }
-
-            final var isEndNode = segment.length() > 1;
-            Integer b = null;
-
-            if (isEndNode) {
-                b = Integer.parseInt(segment.substring(1));
-            }
-
-            final var newNode =
-                    isEndNode ? new HuffmanNode(b, 0)
-                            : new HuffmanNode(null, null, 0);
-
-            switch (segment.charAt(0)) {
-                case 'l':
-                    currentNode.setLeftNode(newNode);
-                    break;
-
-                case 'r':
-                    currentNode.setRightNode(newNode);
-                    break;
-
-                case 'R':
-                    root = newNode;
-                    break;
-            }
-
-            start = end;
-            currentNode = newNode;
-        }
-
-        return new HuffmanTree(root);
     }
 
     /**
@@ -220,19 +131,5 @@ public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> implements 
                     ", frequency=" + frequency +
                     '}';
         }
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder string = new StringBuilder();
-
-        traverse((node, position, level) -> {
-            string
-                    .append("    ".repeat(level))
-                    .append(node)
-                    .append("\n");
-        });
-
-        return string.toString();
     }
 }
