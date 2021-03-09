@@ -9,14 +9,14 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class HuffmanCompressor {
-    private static final String FILE_EXTENSION = ".huff";
+    static final String FILE_EXTENSION = ".huff";
 
     public void compress(String inputFilePath, String dest, boolean overwrite) throws IOException, IncorrectFormatException {
-        HuffmanTree tree = new HuffmanTree(new FileInputStream(inputFilePath));
+        final var inputFile = new File(inputFilePath);
+        HuffmanTree tree = new HuffmanTree(new BufferedInputStream(new FileInputStream(inputFile)));
 
         tree.build();
 
-        final var inputFile = new File(inputFilePath);
         final var file = new File(dest + FILE_EXTENSION);
         final var isFileCreated = file.createNewFile();
 
@@ -25,7 +25,7 @@ public class HuffmanCompressor {
         }
 
         final var inputFileStream = new BufferedInputStream(new FileInputStream(inputFile));
-        final var fileOutput = new DataOutputStream(new FileOutputStream(file, false));
+        final var fileOutput = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file, false)));
 
         final var treeVisitor = new HuffmanTreeVisitor();
 
@@ -183,6 +183,26 @@ public class HuffmanCompressor {
          */
         private LinkedList<Short> getSerializedTreeBytes() {
             return serializedTree;
+        }
+    }
+
+    private class Compressor implements Runnable {
+        private final int[] outputBuff;
+        private final int[] inputBuff;
+        private final int pos;
+
+        private int bits;
+
+        private Compressor(int[] inputBuff, int[] outputBuff, int pos) {
+            this.inputBuff = inputBuff;
+            this.outputBuff = outputBuff;
+            this.pos = pos;
+            this.bits = 0;
+        }
+
+        @Override
+        public void run() {
+
         }
     }
 }

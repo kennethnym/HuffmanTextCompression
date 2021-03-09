@@ -3,14 +3,14 @@ package kenneth.coursework.compression;
 import kenneth.coursework.exceptions.IncorrectFormatException;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 public class HuffmanDecompressor {
     public void decompress(String inputFile, String dest) throws IOException, IncorrectFormatException {
-        final var fileInput = new DataInputStream(new BufferedInputStream(new FileInputStream(inputFile)));
+        final var compressedFile = new File(inputFile + HuffmanCompressor.FILE_EXTENSION);
+        final var fileInput = new DataInputStream(new BufferedInputStream(new FileInputStream(compressedFile)));
 
         final var huffmanTree = HuffmanTreeSerializer.deserializeFromStream(fileInput);
-        final var fileOutput = new DataOutputStream(new FileOutputStream(dest));
+        final var fileOutput = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(dest)));
         var fileSize = fileInput.readLong();
 
         var bytesWritten = 0L;
