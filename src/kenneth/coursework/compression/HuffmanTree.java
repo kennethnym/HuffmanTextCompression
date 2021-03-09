@@ -5,10 +5,8 @@ import kenneth.coursework.utils.BinaryNode;
 import kenneth.coursework.utils.BinaryTree;
 import kenneth.coursework.utils.Serializable;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

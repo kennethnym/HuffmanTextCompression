@@ -13,8 +13,8 @@ public class HuffmanCompressor {
 
     public void compress(String inputFilePath, String dest, boolean overwrite) throws IOException, IncorrectFormatException {
         final var inputFile = new File(inputFilePath);
-        HuffmanTree tree = new HuffmanTree(new BufferedInputStream(new FileInputStream(inputFile)));
 
+        final var tree = new HuffmanTree(new BufferedInputStream(new FileInputStream(inputFile)));
         tree.build();
 
         final var file = new File(dest + FILE_EXTENSION);
@@ -183,26 +183,6 @@ public class HuffmanCompressor {
          */
         private LinkedList<Short> getSerializedTreeBytes() {
             return serializedTree;
-        }
-    }
-
-    private class Compressor implements Runnable {
-        private final int[] outputBuff;
-        private final int[] inputBuff;
-        private final int pos;
-
-        private int bits;
-
-        private Compressor(int[] inputBuff, int[] outputBuff, int pos) {
-            this.inputBuff = inputBuff;
-            this.outputBuff = outputBuff;
-            this.pos = pos;
-            this.bits = 0;
-        }
-
-        @Override
-        public void run() {
-
         }
     }
 }
