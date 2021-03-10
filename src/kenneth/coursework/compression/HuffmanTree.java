@@ -5,6 +5,7 @@ import kenneth.coursework.utils.BinaryTree;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * Represents a huffman encoding tree.
@@ -25,36 +26,33 @@ public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> {
     public void build() throws IOException {
         constructFrequencyMap();
 
-        final var sortedFrequencyNodes = frequencyMap.toHuffmanNodes();
-        var nodeCount = sortedFrequencyNodes.getSize();
+        final List<HuffmanNode> sortedFrequencyNodes = frequencyMap.toHuffmanNodes();
+
+        int nodeCount = sortedFrequencyNodes.size();
 
         if (nodeCount == 1) {
-            final var node = sortedFrequencyNodes.removeFirst();
+            final var node = sortedFrequencyNodes.get(0);
             root = new HuffmanNode(node, null, node.frequency);
             return;
         }
 
         while (nodeCount > 0) {
-            final var smallest = sortedFrequencyNodes.removeFirst();
-            final var secondSmallest = sortedFrequencyNodes.removeFirst();
+            final var smallest = sortedFrequencyNodes.remove(0);
+            final var secondSmallest = sortedFrequencyNodes.remove(0);
             final var totalFrequency = smallest.frequency + secondSmallest.frequency;
 
-            nodeCount = sortedFrequencyNodes.getSize();
+            nodeCount = sortedFrequencyNodes.size();
 
             if (nodeCount > 0) {
-                final var parentNode = new HuffmanNode(smallest, secondSmallest, totalFrequency);
+                final HuffmanNode parentNode = new HuffmanNode(smallest, secondSmallest, totalFrequency);
 
-                var i = 0;
-                for (var item : sortedFrequencyNodes) {
-                    if (item.getValue().frequency >= totalFrequency) {
-                        sortedFrequencyNodes.insertBefore(item, parentNode);
+                for (int i = 0; i <= nodeCount; i++) {
+                    if (i == nodeCount) {
+                        sortedFrequencyNodes.add(parentNode);
+                    } else if (sortedFrequencyNodes.get(i).frequency >= totalFrequency) {
+                        sortedFrequencyNodes.add(Math.max(i - 1, 0), parentNode);
                         break;
                     }
-                    i++;
-                }
-
-                if (i == nodeCount) {
-                    sortedFrequencyNodes.append(parentNode);
                 }
             } else {
                 root = new HuffmanNode(smallest, secondSmallest, totalFrequency);

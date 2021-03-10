@@ -5,7 +5,7 @@ import kenneth.coursework.exceptions.IncorrectFormatException;
 import java.io.*;
 
 public class HuffmanDecompressor {
-    public void decompress(String inputFile, String dest) throws IOException, IncorrectFormatException {
+    public void decompress(String inputFile, String dest) throws IOException {
         final var compressedFile = new File(inputFile + HuffmanCompressor.FILE_EXTENSION);
         final var fileInput = new DataInputStream(new BufferedInputStream(new FileInputStream(compressedFile)));
 

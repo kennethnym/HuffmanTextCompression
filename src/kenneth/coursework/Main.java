@@ -34,16 +34,16 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        final var inputFile = "/Users/kenneth/Desktop/para";
-        final var outputFile = "/Users/kenneth/Desktop/compressed_para";
-        final var decompressedFile = "/Users/kenneth/Desktop/decompressed_para";
+        final var inputFile = "/Users/kenneth/Desktop/world_leaders";
+        final var outputFile = "/Users/kenneth/Desktop/compressed_world_leaders";
+        final var decompressedFile = "/Users/kenneth/Desktop/decompressed_world_leaders";
         final var compressor = new HuffmanCompressor();
         final var decompressor = new HuffmanDecompressor();
 
         try {
             final var start = System.currentTimeMillis();
             compressor.compress(inputFile, outputFile, true);
-            decompressor.decompress(outputFile, decompressedFile);
+//            decompressor.decompress(outputFile, decompressedFile);
             final var end = System.currentTimeMillis();
             System.out.println("took " + (end - start) + "ms");
         } catch (IOException | IncorrectFormatException ex) {
