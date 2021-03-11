@@ -1,10 +1,12 @@
 package kenneth.coursework.compression;
 
+import kenneth.coursework.exceptions.IncorrectFormatException;
+
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 
 public class HuffmanDecompressor {
-    public void decompress(File inputFile, File dest, boolean overwrite) throws IOException {
+    public void decompress(File inputFile, File dest, boolean overwrite) throws IOException, IncorrectFormatException {
         final var fileInput = new DataInputStream(new BufferedInputStream(new FileInputStream(inputFile)));
 
         final var huffmanTree = HuffmanTreeSerializer.deserializeFromStream(fileInput);

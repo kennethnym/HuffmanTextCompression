@@ -1,5 +1,7 @@
 package kenneth.coursework.compression;
 
+import kenneth.coursework.exceptions.IncorrectFormatException;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -78,7 +80,7 @@ public class HuffmanTreeSerializer {
         }
     }
 
-    public static HuffmanTree deserializeFromStream(DataInputStream stream) throws IOException {
+    public static HuffmanTree deserializeFromStream(DataInputStream stream) throws IOException, IncorrectFormatException {
         var size = stream.readInt();
 
         HuffmanTree.HuffmanNode root = null;
@@ -101,8 +103,10 @@ public class HuffmanTreeSerializer {
             } else if (s == Code.ROOT.val) {
                 root = new HuffmanTree.HuffmanNode();
                 currentNode = root;
-            } else {
+            } else if (s >= 0) {
                 currentNode.setByte(s);
+            } else {
+                throw new IncorrectFormatException();
             }
         }
 

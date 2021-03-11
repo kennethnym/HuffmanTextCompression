@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import kenneth.coursework.compression.HuffmanCompressor;
 import kenneth.coursework.compression.HuffmanDecompressor;
+import kenneth.coursework.exceptions.IncorrectFormatException;
 import kenneth.coursework.ui.components.Alerts;
 import kenneth.coursework.ui.components.FileInputField;
 import kenneth.coursework.ui.components.FormField;
@@ -173,6 +174,14 @@ public class MainPage extends VBox {
         hideProgressDialog();
     }
 
+    private void showInvalidFileError() {
+        Alerts.showError(
+                "Invalid file",
+                "The file you selected for decompression is in an incorrect format." +
+                        "Make sure the file is produced by this program. It should end in '.huff'."
+        );
+    }
+
     private class CompressionTask implements Runnable {
         @Override
         public void run() {
@@ -192,6 +201,8 @@ public class MainPage extends VBox {
                 }
 
                 Platform.runLater(MainPage.this::showSuccess);
+            } catch (IncorrectFormatException ex) {
+                Platform.runLater(MainPage.this::showInvalidFileError);
             } catch (FileAlreadyExistsException ex) {
                 Platform.runLater(MainPage.this::showFileExistError);
             } catch (IOException ex) {
