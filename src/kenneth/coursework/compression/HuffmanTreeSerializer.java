@@ -86,28 +86,32 @@ public class HuffmanTreeSerializer {
         HuffmanTree.HuffmanNode root = null;
         HuffmanTree.HuffmanNode currentNode = null;
 
-        while (size > 0) {
-            short s = stream.readShort();
-            size--;
+        try {
+            while (size > 0) {
+                short s = stream.readShort();
+                size--;
 
-            if (s == Code.UP.val) {
-                currentNode = (HuffmanTree.HuffmanNode) currentNode.getParent();
-            } else if (s == Code.LEFT.val) {
-                final var newNode = new HuffmanTree.HuffmanNode();
-                currentNode.setLeftNode(newNode);
-                currentNode = newNode;
-            } else if (s == Code.RIGHT.val) {
-                final var newNode = new HuffmanTree.HuffmanNode();
-                currentNode.setRightNode(newNode);
-                currentNode = newNode;
-            } else if (s == Code.ROOT.val) {
-                root = new HuffmanTree.HuffmanNode();
-                currentNode = root;
-            } else if (s >= 0) {
-                currentNode.setByte(s);
-            } else {
-                throw new IncorrectFormatException();
+                if (s == Code.UP.val) {
+                    currentNode = (HuffmanTree.HuffmanNode) currentNode.getParent();
+                } else if (s == Code.LEFT.val) {
+                    final var newNode = new HuffmanTree.HuffmanNode();
+                    currentNode.setLeftNode(newNode);
+                    currentNode = newNode;
+                } else if (s == Code.RIGHT.val) {
+                    final var newNode = new HuffmanTree.HuffmanNode();
+                    currentNode.setRightNode(newNode);
+                    currentNode = newNode;
+                } else if (s == Code.ROOT.val) {
+                    root = new HuffmanTree.HuffmanNode();
+                    currentNode = root;
+                } else if (s >= 0) {
+                    currentNode.setByte(s);
+                } else {
+                    throw new IncorrectFormatException();
+                }
             }
+        } catch (NullPointerException ex) {
+            throw new IncorrectFormatException();
         }
 
         return new HuffmanTree(root);
