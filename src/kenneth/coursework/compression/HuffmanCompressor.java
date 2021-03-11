@@ -1,6 +1,5 @@
 package kenneth.coursework.compression;
 
-import kenneth.coursework.exceptions.IncorrectFormatException;
 import kenneth.coursework.utils.BinaryTree;
 
 import java.io.*;
@@ -11,13 +10,15 @@ import java.util.LinkedList;
 public class HuffmanCompressor {
     static final String FILE_EXTENSION = ".huff";
 
-    public void compress(String inputFilePath, String dest, boolean overwrite) throws IOException, IncorrectFormatException {
-        final var inputFile = new File(inputFilePath);
+    public void compress(String inputFilePath, String dest, boolean overwrite) throws IOException {
+        compress(new File(inputFilePath), new File(dest), overwrite);
+    }
 
+    public void compress(File inputFile, File dest, boolean overwrite) throws IOException {
         final var tree = new HuffmanTree(new BufferedInputStream(new FileInputStream(inputFile)));
         tree.build();
 
-        final var file = new File(dest + FILE_EXTENSION);
+        final var file = new File(dest.getAbsolutePath() + FILE_EXTENSION);
         final var isFileCreated = file.createNewFile();
 
         if (!isFileCreated && !overwrite) {

@@ -14,6 +14,10 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    implementation 'org.controlsfx:controlsfx:8.0.5'
+}
+
 javafx {
-    modules = ['javafx.controls']
+    modules = ['javafx.base', 'javafx.controls']
 }

@@ -1,10 +1,6 @@
 package kenneth.coursework;
 
-import kenneth.coursework.compression.HuffmanCompressor;
-import kenneth.coursework.compression.HuffmanDecompressor;
-import kenneth.coursework.exceptions.IncorrectFormatException;
-
-import java.io.IOException;
+import kenneth.coursework.ui.MainApplication;
 
 /**
  * Daily log:
@@ -30,25 +26,28 @@ import java.io.IOException;
  * - mar 9
  * - SIGNIFICANTLY IMPROVED PERFORMANCE (1000 FOLD DIFFERENCE!) by using buffered streams
  * - parallelize compression (https://nickolasfisher.com/blog/Improving-Java-IO-Performance-Appropriately-Using-Random-Access-Over-Streams)
+ * - mar 10
+ * - started implementing ui
  */
 
 public class Main {
     public static void main(String[] args) {
-        final var inputFile = "/Users/kenneth/Desktop/world_leaders";
-        final var outputFile = "/Users/kenneth/Desktop/compressed_world_leaders";
-        final var decompressedFile = "/Users/kenneth/Desktop/decompressed_world_leaders";
-        final var compressor = new HuffmanCompressor();
-        final var decompressor = new HuffmanDecompressor();
-
-        try {
-            final var start = System.currentTimeMillis();
-            compressor.compress(inputFile, outputFile, true);
+//        final var inputFile = "/Users/kenneth/Desktop/portuguese.txt";
+//        final var outputFile = "/Users/kenneth/Desktop/compressed_portuguese";
+//        final var decompressedFile = "/Users/kenneth/Desktop/decompressed_portuguese";
+//        final var compressor = new HuffmanCompressor();
+//        final var decompressor = new HuffmanDecompressor();
+//
+//        try {
+//            final var start = System.currentTimeMillis();
+//            compressor.compress(inputFile, outputFile, true);
 //            decompressor.decompress(outputFile, decompressedFile);
-            final var end = System.currentTimeMillis();
-            System.out.println("took " + (end - start) + "ms");
-        } catch (IOException | IncorrectFormatException ex) {
-            System.out.println(ex.getLocalizedMessage());
-            ex.printStackTrace();
-        }
+//            final var end = System.currentTimeMillis();
+//            System.out.println("took " + (end - start) + "ms");
+//        } catch (IOException | IncorrectFormatException ex) {
+//            System.out.println(ex.getLocalizedMessage());
+//            ex.printStackTrace();
+//        }
+        MainApplication.main(args);
     }
 }
