@@ -10,10 +10,6 @@ import java.util.LinkedList;
 public class HuffmanCompressor {
     static final String FILE_EXTENSION = ".huff";
 
-    public void compress(String inputFilePath, String dest, boolean overwrite) throws IOException {
-        compress(new File(inputFilePath), new File(dest), overwrite);
-    }
-
     public void compress(File inputFile, File dest, boolean overwrite) throws IOException {
         final var tree = new HuffmanTree(new BufferedInputStream(new FileInputStream(inputFile)));
         tree.build();
