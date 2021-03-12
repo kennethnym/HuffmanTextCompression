@@ -133,7 +133,7 @@ public class MainPage extends VBox {
         progressDialog.initOwner(getScene().getWindow());
 
         final var container = new VBox();
-        final var loadingLabel = new Label("Compressing...");
+        final var loadingLabel = new Label("Performing operation...");
         final var progressBar = new ProgressBar();
         progressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
         loadingLabel.setContentDisplay(ContentDisplay.BOTTOM);

@@ -32,22 +32,6 @@ import kenneth.coursework.ui.MainApplication;
 
 public class Main {
     public static void main(String[] args) {
-//        final var inputFile = "/Users/kenneth/Desktop/portuguese.txt";
-//        final var outputFile = "/Users/kenneth/Desktop/compressed_portuguese";
-//        final var decompressedFile = "/Users/kenneth/Desktop/decompressed_portuguese";
-//        final var compressor = new HuffmanCompressor();
-//        final var decompressor = new HuffmanDecompressor();
-//
-//        try {
-//            final var start = System.currentTimeMillis();
-//            compressor.compress(inputFile, outputFile, true);
-//            decompressor.decompress(outputFile, decompressedFile);
-//            final var end = System.currentTimeMillis();
-//            System.out.println("took " + (end - start) + "ms");
-//        } catch (IOException | IncorrectFormatException ex) {
-//            System.out.println(ex.getLocalizedMessage());
-//            ex.printStackTrace();
-//        }
         MainApplication.main(args);
     }
 }
