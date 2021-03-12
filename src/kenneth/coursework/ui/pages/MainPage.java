@@ -85,7 +85,7 @@ public class MainPage extends VBox {
         outputFileNameField.setControl(outputFileNameBox);
 
         final var actionButtonContainer = new HBox();
-        final var compressButton = new Button("Compress");
+        final var compressButton = new Button("Perform operation");
         compressButton.setOnAction(compressButtonAction);
         actionButtonContainer.setPadding(new Insets(8, 0, 0, 0));
         actionButtonContainer.setAlignment(Pos.CENTER_RIGHT);
