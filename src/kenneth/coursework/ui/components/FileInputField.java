@@ -76,6 +76,8 @@ public class FileInputField extends FormField {
 
         if (selectedFile != null) {
             filePathBox.setText(selectedFile.getAbsolutePath());
+        } else {
+            filePathBox.setText("");
         }
 
         fileHandler.handleFile(selectedFile);
