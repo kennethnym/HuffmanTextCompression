@@ -43,6 +43,7 @@ public class FileInputField extends FormField {
     private TextField filePathBox;
     private ChooseMode chooseMode;
     private FileHandler fileHandler;
+    private FileChooser.ExtensionFilter fileExtensionFilters;
 
     private final PathSuggestionProvider pathSuggestionProvider = new PathSuggestionProvider();
 
@@ -88,6 +89,7 @@ public class FileInputField extends FormField {
 
         this.fileHandler = fileHandler;
         chooseMode = mode;
+        fileExtensionFilters = null;
 
         filePathBox = new TextField();
         final var inputFileBoxContainer = new HBox(8);
@@ -99,6 +101,11 @@ public class FileInputField extends FormField {
         HBox.setHgrow(filePathBox, Priority.ALWAYS);
         inputFileBoxContainer.getChildren().addAll(filePathBox, browseFileButton);
         setControl(inputFileBoxContainer);
+    }
+
+    public FileInputField(String label, FileHandler fileHandler, ChooseMode mode, FileChooser.ExtensionFilter fileExtensionFilters) {
+        this(label, fileHandler, mode);
+        this.fileExtensionFilters = fileExtensionFilters;
     }
 
     private class PathSuggestionGenerator extends TimerTask {

@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import kenneth.coursework.compression.HuffmanCompressor;
 import kenneth.coursework.compression.HuffmanDecompressor;
@@ -34,6 +35,12 @@ public class MainPage extends VBox {
     private File inputFile = null;
     private File outputDirectory = null;
 
+    /**
+     * The source file of a Huffman Tree to be used to compress another file.
+     * Must be a compressed file.
+     */
+    private File treeSource = null;
+
     private TextField outputFileNameBox;
     private LabeledCheckbox overwriteCheckbox;
     private Dialog progressDialog;
@@ -42,6 +49,8 @@ public class MainPage extends VBox {
     private final FileInputField.FileHandler inputFileHandler = file -> inputFile = file;
 
     private final FileInputField.FileHandler outputDirHandler = file -> outputDirectory = file;
+
+    private final FileInputField.FileHandler treeSourceFileHandler = file -> treeSource = file;
 
     private final EventHandler<ActionEvent> compressButtonAction = event -> beginCompression();
 
@@ -80,6 +89,15 @@ public class MainPage extends VBox {
                 FileInputField.ChooseMode.DIRECTORY
         );
 
+        final var treeSourceField = new FileInputField(
+                "The source of the Huffman Tree to be used to process the input file.\n" +
+                        "Can be empty if you want to use a uniquely generated huffman tree.\n" +
+                        "The file extension must be .huff",
+                treeSourceFileHandler,
+                FileInputField.ChooseMode.FILE,
+                new FileChooser.ExtensionFilter("Huffman compressed files (*.huff)", "*.huff")
+        );
+
         final var outputFileNameField = new FormField("What should the name of the output file be?");
         outputFileNameBox = new TextField();
         outputFileNameField.setControl(outputFileNameBox);
@@ -99,6 +117,7 @@ public class MainPage extends VBox {
                 optionsContainer,
                 inputFileField,
                 outputDirField,
+                treeSourceField,
                 outputFileNameField,
                 overwriteCheckbox,
                 actionButtonContainer
@@ -193,7 +212,7 @@ public class MainPage extends VBox {
 
                 switch (operation) {
                     case COMPRESS:
-                        compressor.compress(inputFile, outputFile, shouldOverwrite);
+                        compressor.compress(inputFile, outputFile, treeSource, shouldOverwrite);
                         break;
                     case DECOMPRESS:
                         decompressor.decompress(inputFile, outputFile, shouldOverwrite);

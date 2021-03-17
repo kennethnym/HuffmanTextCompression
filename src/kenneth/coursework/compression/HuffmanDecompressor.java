@@ -22,8 +22,19 @@ public class HuffmanDecompressor {
         var bytesWritten = 0L;
         var root = huffmanTree.getRoot();
         var node = root;
+        var isUnknownByte = false;
 
         for (var b = fileInput.read(); b >= 0; b = fileInput.read()) {
+            if (b == HuffmanCompressor.SpecialByte.UNKNOWN_BYTE_ENDS.b) {
+                isUnknownByte = false;
+                continue;
+            }
+
+            if (isUnknownByte) {
+                fileOutput.write(b);
+                continue;
+            }
+
             // read from the start of a byte
             var mask = 0b10000000;
             var pos = 7;
@@ -36,6 +47,10 @@ public class HuffmanDecompressor {
                 if (nextByte != null) {
                     fileOutput.write(nextByte);
                     if (++bytesWritten == fileSize) break;
+                    if (b == HuffmanCompressor.SpecialByte.UNKNOWN_BYTE_STARTS.b) {
+                        isUnknownByte = true;
+                        continue;
+                    }
                     node = root;
                 } else {
                     node = nextNode;

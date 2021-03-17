@@ -1,5 +1,6 @@
 package kenneth.coursework.compression;
 
+import kenneth.coursework.exceptions.IncorrectFormatException;
 import kenneth.coursework.utils.BinaryTree;
 
 import java.io.*;
@@ -8,11 +9,51 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class HuffmanCompressor {
+    /**
+     * Defines special bytes in the compressed file.
+     */
+    enum SpecialByte {
+        /**
+         * Indicates the following bytes are unknown, meaning it does not exist in the huffman tree.
+         */
+        UNKNOWN_BYTE_STARTS(-2),
+
+        /**
+         * Indicates the next byte is a known byte.
+         */
+        UNKNOWN_BYTE_ENDS(-3);
+
+        int b;
+
+        SpecialByte(int b) {
+            this.b = b;
+        }
+
+        public static boolean isSpecialByte(int b) {
+            return b == SpecialByte.UNKNOWN_BYTE_ENDS.b || b == SpecialByte.UNKNOWN_BYTE_STARTS.b;
+        }
+    }
+
     static final String FILE_EXTENSION = ".huff";
 
-    public void compress(File inputFile, File dest, boolean overwrite) throws IOException {
-        final var tree = new HuffmanTree(new BufferedInputStream(new FileInputStream(inputFile)));
-        tree.build();
+    /**
+     * Compress the given file, optionally with the huffman tree stored in the given compressed file.
+     *
+     * @param inputFile  The file to be compressed
+     * @param dest       The output file to which compressed content will be written to.
+     * @param treeSource The compressed file where the tree is stored. If null, a unique tree is generated for the file.
+     * @param overwrite  Whether to overwrite the destination file if it already exists.
+     */
+    public void compress(File inputFile, File dest, File treeSource, boolean overwrite) throws IOException, IncorrectFormatException {
+        HuffmanTree tree;
+
+        if (treeSource == null) {
+            tree = new HuffmanTree(new BufferedInputStream(new FileInputStream(inputFile)));
+            tree.build();
+        } else {
+            final var treeSourceFileInput = new DataInputStream(new BufferedInputStream(new FileInputStream(treeSource)));
+            tree = HuffmanTreeSerializer.deserializeFromStream(treeSourceFileInput);
+        }
 
         final var file = new File(dest.getAbsolutePath() + FILE_EXTENSION);
         final var isFileCreated = file.createNewFile();
@@ -36,9 +77,28 @@ public class HuffmanCompressor {
 
         var partition = 0;
         var pos = 8;
+        var isPrevByteUnknown = false;
 
         for (var b = inputFileStream.read(); b >= 0; b = inputFileStream.read()) {
             final var bits = bitCodeMap.get(b);
+
+            if (bits == null) {
+                if (!isPrevByteUnknown) {
+                    fileOutput.write(partition);
+                    fileOutput.writeShort(SpecialByte.UNKNOWN_BYTE_STARTS.b);
+                    partition = 0;
+                    pos = 8;
+                    isPrevByteUnknown = true;
+                }
+                fileOutput.write(b);
+                continue;
+            }
+
+            if (isPrevByteUnknown) {
+                fileOutput.writeShort(SpecialByte.UNKNOWN_BYTE_ENDS.b);
+                isPrevByteUnknown = false;
+            }
+
             final var bitLength = bits[0];
             final var bitCode = bits[1];
 
