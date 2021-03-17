@@ -1,5 +1,6 @@
 plugins {
     id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'application'
 }
 
 sourceSets {
@@ -20,4 +21,9 @@ dependencies {
 
 javafx {
     modules = ['javafx.base', 'javafx.controls']
+}
+
+run {
+    mainClassName = "kenneth.coursework.Main"
+    jvmArgs = ['--add-exports=javafx.base/com.sun.javafx.event=ALL-UNNAMED']
 }
