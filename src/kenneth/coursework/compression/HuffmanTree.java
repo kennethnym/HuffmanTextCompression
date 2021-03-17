@@ -18,11 +18,21 @@ public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> {
         super(root);
     }
 
+    /**
+     * Creates a huffman encoding tree from the given input. The tree is not built until the build method is called.
+     *
+     * @param input The input to be read.
+     */
     public HuffmanTree(InputStream input) {
         super();
         inputStream = input;
     }
 
+    /**
+     * Constructs the Huffman encoding tree.
+     *
+     * @throws IOException
+     */
     public void build() throws IOException {
         constructFrequencyMap();
 
@@ -84,7 +94,7 @@ public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> {
     static class HuffmanNode extends BinaryNode {
         /**
          * A character in the original text with the associated frequency.
-         * null of this node has children.
+         * null if this node has children.
          */
         private Integer b;
 
@@ -110,16 +120,21 @@ public class HuffmanTree extends BinaryTree<HuffmanTree.HuffmanNode> {
             this.frequency = frequency;
         }
 
+        /**
+         * @return The byte in the original byte array with the associated frequency.
+         * null of this node has children.
+         */
         public Integer getByte() {
             return b;
         }
 
+        /**
+         * Changes the byte stored in this huffman node.
+         *
+         * @param b The new byte to be stored.
+         */
         public void setByte(int b) {
             this.b = b;
-        }
-
-        public boolean hasChildren() {
-            return left != null || right != null;
         }
 
         @Override

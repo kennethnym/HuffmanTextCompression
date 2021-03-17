@@ -6,6 +6,16 @@ import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 
 public class HuffmanDecompressor {
+    /**
+     * Decompresses the given file, and writes the decompressed content into the given destination.
+     *
+     * @param inputFile The compressed file to be decompressed
+     * @param dest      The destination file to which the decompressed content will be written to
+     * @param overwrite Whether to overwrite the content of the destination file if it exists already.
+     * @throws IOException              Thrown when there is an error decompressing, or when the destination file already exists
+     *                                  and the overwrite option is not enabled.
+     * @throws IncorrectFormatException When the compressed file is invalid.
+     */
     public void decompress(File inputFile, File dest, boolean overwrite) throws IOException, IncorrectFormatException {
         final var fileInput = new DataInputStream(new BufferedInputStream(new FileInputStream(inputFile)));
 

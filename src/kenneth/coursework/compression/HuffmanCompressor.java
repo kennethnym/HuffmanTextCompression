@@ -150,6 +150,10 @@ public class HuffmanCompressor {
         }
     }
 
+    /**
+     * A {@link BinaryTree.Visitor} that visits nodes in a {@link HuffmanTree} and collects needed information
+     * for compression along the way.
+     */
     private static class HuffmanTreeVisitor implements BinaryTree.Visitor<HuffmanTree.HuffmanNode> {
         // maps bytes to their corresponding huffman code
         final HashMap<Integer, int[]> bitCodeMap = new HashMap<>();

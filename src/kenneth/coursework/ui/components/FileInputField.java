@@ -84,6 +84,13 @@ public class FileInputField extends FormField {
         pathSuggestionTimer.schedule(new PathSuggestionGenerator(newText), SUGGESTION_DELAY);
     };
 
+    /**
+     * Creates a file input field.
+     *
+     * @param label       The label for this field.
+     * @param fileHandler The {@link FileHandler} that will handle the selected file.
+     * @param mode        The {@link ChooseMode} of this field.
+     */
     public FileInputField(String label, FileHandler fileHandler, ChooseMode mode) {
         super(label);
 
@@ -103,6 +110,14 @@ public class FileInputField extends FormField {
         setControl(inputFileBoxContainer);
     }
 
+    /**
+     * Creates a file input field that only shows a certain types of files.
+     *
+     * @param label                The label for this field.
+     * @param fileHandler          The {@link FileHandler} that will handle the selected file.
+     * @param mode                 The {@link ChooseMode} of this field.
+     * @param fileExtensionFilters Specifies what file type can be shown in the file picker.
+     */
     public FileInputField(String label, FileHandler fileHandler, ChooseMode mode, FileChooser.ExtensionFilter fileExtensionFilters) {
         this(label, fileHandler, mode);
         this.fileExtensionFilters = fileExtensionFilters;
@@ -124,7 +139,8 @@ public class FileInputField extends FormField {
                 if (dirs != null) {
                     pathSuggestionProvider.suggestedPaths = dirs;
                 }
-            } catch (SecurityException ignored) { }
+            } catch (SecurityException ignored) {
+            }
         }
     }
 

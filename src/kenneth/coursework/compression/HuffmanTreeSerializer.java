@@ -3,9 +3,7 @@ package kenneth.coursework.compression;
 import kenneth.coursework.exceptions.IncorrectFormatException;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.LinkedList;
 
 /**
  * Serialize/deserialize huffman trees.
@@ -28,58 +26,15 @@ public class HuffmanTreeSerializer {
         }
     }
 
-    public static void serializeToStream(HuffmanTree tree, DataOutputStream stream) throws IOException {
-        final var ref = new Object() {
-            int prevLevel = -1;
-            // Number of shorts required to store the given tree.
-            int shortCount = 0;
-            // The serialized tree in shorts.
-            // short is used instead of int to save space, since bytes will never exceed 8 bits.
-            final LinkedList<Short> bytes = new LinkedList<>();
-        };
-
-        tree.traverse((node, pos, level) -> {
-            if (level <= ref.prevLevel) {
-                for (var i = 0; i <= ref.prevLevel - level; i++) {
-                    ref.bytes.addLast(Code.UP.val);
-                    ref.shortCount++;
-                }
-            }
-
-            switch (pos) {
-                case LEFT:
-                    ref.bytes.addLast(Code.LEFT.val);
-                    ref.shortCount++;
-                    break;
-                case RIGHT:
-                    ref.bytes.addLast(Code.RIGHT.val);
-                    ref.shortCount++;
-                    break;
-                case ROOT:
-                    ref.bytes.addLast(Code.ROOT.val);
-                    ref.shortCount++;
-                    break;
-                default:
-                    break;
-            }
-
-            final var b = node.getByte();
-            if (b != null) {
-                ref.bytes.addLast((short) (int) b);
-                ref.shortCount++;
-            }
-
-            ref.prevLevel = level;
-        });
-
-        stream.writeInt(ref.shortCount);
-
-        while (ref.shortCount > 0) {
-            stream.writeShort(ref.bytes.removeFirst());
-            ref.shortCount--;
-        }
-    }
-
+    /**
+     * Obtains the serialized {@link HuffmanTree} available in the given stream.
+     *
+     * @param stream The stream that contains the {@link HuffmanTree}
+     * @return The deserialized {@link HuffmanTree}
+     * @throws IOException              Thrown when there is an error reading the stream
+     * @throws IncorrectFormatException Thrown when the tree is not serialized in a correct format,
+     *                                  or when the tree is not available.
+     */
     public static HuffmanTree deserializeFromStream(DataInputStream stream) throws IOException, IncorrectFormatException {
         var size = stream.readInt();
 
