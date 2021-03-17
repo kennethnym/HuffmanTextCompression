@@ -55,6 +55,11 @@ public class FileInputField extends FormField {
             case FILE:
                 final var fileChooser = new FileChooser();
                 fileChooser.setTitle(FILE_CHOOSER_TITLE);
+
+                if (fileExtensionFilters != null) {
+                    fileChooser.getExtensionFilters().add(fileExtensionFilters);
+                }
+
                 selectedFile = fileChooser.showOpenDialog(window);
                 break;
 
