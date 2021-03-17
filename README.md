@@ -18,6 +18,8 @@ or, on Windows:
 .\gradlew run
 ```
 
+The program has been tested on Windows 10 and macOS Big Sur.
+
 ## Implementation
 
 Huffman coding algorithms compresses texts by assigning fewer bits to store characters that appear more often in the
